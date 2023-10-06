@@ -1,4 +1,7 @@
 from app.routes import app
+from uvicorn import run
+
 
 if __name__ == "__main__":
-    app = app
+    run(app)
+

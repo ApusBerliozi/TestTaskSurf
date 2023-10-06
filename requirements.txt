@@ -1,2 +1,5 @@
 sqlalchemy
 FastApi
+uvicorn
+pydantic
+jwt
