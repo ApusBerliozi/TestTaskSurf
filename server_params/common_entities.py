@@ -22,4 +22,6 @@ class Paginator:
 class Config:
     jwt_user_secret_key: str
     jwt_admin_secret_key: str
+    bot_token: str
+    group_id: str
 
