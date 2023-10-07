@@ -1,26 +1,32 @@
-import datetime
 import typing
 
 from pydantic import BaseModel, create_model
 
+from server_params.common_entities import ServerResponse
 
-def class_generator(annotation: typing.Union[list, BaseModel]):
-    if type(annotation) is list:
-        class Response(BaseModel):
-            content: typing.List[annotation[0]]
-            date: str
-        return Response
+
+def set_annotation(annotation: typing.Union[tuple, BaseModel],
+                   description: str):
+    class_params = {}
+    annotations = ServerResponse.__annotations__
+    class_params.update(ServerResponse().__dict__)
+    class_params.pop("content")
+    class_params.update({"description": description})
+    if type(annotation) is tuple:
+        annotations.update({"content": typing.List[annotation[0]]})
     else:
-        class Response(BaseModel):
-            content: annotation
-            date: str
-        return Response
+        annotations.update({"content": annotation})
+    class_params.update({"__annotations__": annotations})
+    return type("AnnotationClass", (BaseModel,), class_params)
 
 
-def response_model_factory(annotation: typing.Union[list, dict, typing.Type[BaseModel]]):
+def hint_factory(annotation: typing.Union[tuple, dict, typing.Type[BaseModel]],
+                 description: str = ""):
     if type(annotation) is dict:
         annotation_model = create_model('AnnotationModel', **{
             key: (value, None) for key, value in annotation.items()})
-        return class_generator(annotation_model)
+        return set_annotation(annotation_model,
+                              description=description)
     else:
-        return class_generator(annotation)
+        return set_annotation(annotation,
+                              description=description)

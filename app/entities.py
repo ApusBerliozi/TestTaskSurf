@@ -1,11 +1,12 @@
 import typing
+from dataclasses import dataclass
 from enum import Enum
 
 from pydantic import BaseModel
 
 
 class User(BaseModel):
-    uuid: int
+    uuid: str
     name: str
     surname: str
 
@@ -22,26 +23,57 @@ class AdvertisementType(Enum):
 
 
 class Comment(BaseModel):
-    id_: int
-    user: User
-    content: str
-
-
-class Complaint(BaseModel):
-    id_: int
+    id: int
     user: User
     content: str
 
 
 class Advertisement(BaseModel):
-    id_: str
+    id: str
     user: User
     name: str
     type: AdvertisementType
     comments: typing.List[Comment]
     content: str
-    complaints: typing.List[Complaint]
+    publication_time: str
 
 
 class TestResponse(BaseModel):
     content: str
+
+
+class ComplaintType(Enum):
+    adult_content = "Взрослый контент"
+    politic = "Политика"
+    insults = "Оскорбления"
+
+
+class Complaint(BaseModel):
+    id: int
+    user: User
+    content: str
+    type: ComplaintType
+    publication_time: str
+
+
+@dataclass
+class AdvertisementFilter:
+    type: AdvertisementType | None = None
+    user_id: int | None = None
+
+
+@dataclass
+class CommentFilter:
+    user_id: typing.Optional[int] = None
+
+
+@dataclass
+class ComplaintFilter:
+    user_id: typing.Optional[int] = None
+    type: typing.Optional[ComplaintType] = None
+
+
+@dataclass
+class AdvertisementSort:
+    publication_time: typing.Optional[str] = None
+
