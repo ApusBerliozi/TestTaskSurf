@@ -25,12 +25,8 @@ def parse_comment_filtr(
 def parse_complaint_filtr(
     type: ComplaintType = Query(None,
                                 title="Complaint's type",
-                                description="Which advertisements whe should receive"),
-    user_id: int = Query(None,
-                         title="User's id",
-                         description="Which user placed a complaint",),) -> ComplaintFilter:
-    return ComplaintFilter(user_id=user_id,
-                           type=type)
+                                description="Which advertisements whe should receive"),) -> ComplaintFilter:
+    return ComplaintFilter(type=type)
 
 
 def parse_advertisement_sort_params(

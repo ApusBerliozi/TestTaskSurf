@@ -1,14 +1,20 @@
-import argon2
+from fastapi import HTTPException
+
+from argon2 import PasswordHasher
 
 
-def hash_password(password: str):
-    password = argon2.hash_password(password=password.encode())
-    return password
+ph = PasswordHasher()
+
+
+def hash_password(password: str) -> str:
+    hash_ = ph.hash(password=password)
+    return hash_
 
 
 def check_password(password: str,
-                   hashed_password: str):
-    if argon2.verify_password(password.encode(),
-                              hashed_password.encode()):
-        return True
-        
+                   hash: str):
+    try:
+        ph.verify(hash, password)
+    except:
+        raise HTTPException(status_code=400, detail="Password isn't correct")
+    return True

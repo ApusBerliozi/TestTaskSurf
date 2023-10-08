@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from app.entities import Credentials, Advertisement, Comment, Complaint, AdvertisementFilter, CommentFilter, \
-    AdvertisementSort, ComplaintFilter, NewUser
+    AdvertisementSort, ComplaintFilter, NewUser, NewAdvertisement, NewComplaint, NewComment
 from app.query_parsers import parse_advertisements_filtr, parse_advertisement_sort_params, parse_comment_filtr, \
     parse_complaint_filtr
 from app.repo import create_user, get_user, collect_advertisements, generate_advertisement, receive_advertisement, \
@@ -9,6 +9,7 @@ from app.repo import create_user, get_user, collect_advertisements, generate_adv
 from libs.jwt_token import verify_user_token, verify_admin_token, create_user_token, create_admin_token
 from libs.response_generator import hint_factory
 from server_params.common_entities import ServerResponse, Paginator
+from server_params.logs import logger
 from server_params.paginator import get_paginator
 
 app = FastAPI()
@@ -18,6 +19,7 @@ app = FastAPI()
 async def sign_up(user_info: NewUser,) -> hint_factory({"jwt_token": str},
                                                        description="Зарегистрировался новый пользователь"):
     user_token = create_user_token(create_user(user=user_info))
+    logger.info("Создан новый пользователь")
     return ServerResponse(content={"jwt_token": user_token},
                           description="Зарегистрировался новый пользователь")
 
@@ -43,7 +45,7 @@ async def get_advertisements(paginator: Paginator = Depends(get_paginator),
 
 
 @app.post("/advertisements/")
-async def create_advertisement(advertisement: Advertisement,
+async def create_advertisement(advertisement: NewAdvertisement,
                                token_info: dict = Depends(verify_user_token),) -> hint_factory(Advertisement,
                                                                                                description="Создано новое объявление"):
     advertisement = generate_advertisement(advertisement=advertisement,
@@ -65,7 +67,9 @@ async def remove_advertisement(advertisement_id: int,
                                token: str = Depends(verify_user_token),) -> hint_factory({"status": int},
                                                                                          description="Удаленно объявление"):
     delete_advertisement(advertisement_id=advertisement_id)
-    return ServerResponse(description=f"Удаленно объявление с id {advertisement_id}")
+    logger.warn(msg=f"Объявление с id {advertisement_id} было удалено!")
+    return ServerResponse(description=f"Удаленно объявление с id {advertisement_id}",
+                          content={})
 
 
 @app.get("/advertisements/{advertisement_id:int}/comments/")
@@ -83,15 +87,17 @@ async def get_adv_comments(advertisement_id: int,
 @app.delete("/advertisements/{advertisement_id:int}/comments/{comment_id:int}/")
 async def delete_comment(comment_id: int,
                          advertisement_id: int,
-                         token: str = Depends(verify_admin_token),) -> hint_factory(Comment,
+                         token: str = Depends(verify_admin_token),) -> hint_factory(annotation={},
                                                                                     description="Удалён комментарий"):
     remove_comment(comment_id=comment_id)
-    return ServerResponse(description=f"Удалён комментарий с id {comment_id} для объявления {advertisement_id}")
+    logger.warn(msg=f"Комментарий с id {comment_id} был удален!")
+    return ServerResponse(description=f"Удалён комментарий с id {comment_id} для объявления {advertisement_id}",
+                          content={})
 
 
 @app.post("/advertisements/{advertisement_id:int}/comments/")
 async def create_comment(advertisement_id: int,
-                         comment: Comment,
+                         comment: NewComment,
                          token_info: dict = Depends(verify_user_token),) -> hint_factory(Comment,
                                                                                    description="Создан комментарий для объявления"):
     comment = generate_comment(advertisement_id=advertisement_id,
@@ -106,13 +112,14 @@ async def create_admin(user_login: str,
                        token: str = Depends(verify_admin_token),) -> hint_factory({"admin_token": str},
                                                                                   description="Создан новый администратор"):
     admin_token = create_admin_token(make_admin(user_login=user_login))
-    return ServerResponse(content=admin_token,
+    logger.info(msg="Был создан новый администратор!")
+    return ServerResponse(content={"admin_token": admin_token},
                           description=f"Создан новый администратор")
 
 
 @app.post("/advertisements/{advertisement_id:int}/complaints/")
 async def create_complaint(advertisement_id: int,
-                           complaint: Complaint,
+                           complaint: NewComplaint,
                            token_info: dict = Depends(verify_user_token),) -> hint_factory(Complaint,
                                                                                      description="Создана жалоба на объявление"):
     complaint = generate_complaint(advertisement_id=advertisement_id,

@@ -1,5 +1,6 @@
 import typing
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 
 from pydantic import BaseModel
@@ -22,15 +23,16 @@ class NewUser(Credentials):
 
 
 class AdvertisementType(Enum):
-    buy_order = "покупка"
-    sell_order = "продажа"
-    service = "услуга"
+    buy_order = "buy_order"
+    sell_order = "sell_order"
+    service = "service"
 
 
 class Comment(BaseModel):
     content: str
-    id: int = None
-    user: User = None
+    published_at: datetime | None = None
+    id: int | None = None
+    user: User | None = None
 
 
 class Advertisement(BaseModel):
@@ -38,8 +40,14 @@ class Advertisement(BaseModel):
     type: AdvertisementType
     content: str
     user: User = None
-    publication_time: str = None
-    id: str = None
+    publication_time: datetime | None = None
+    id: int | None = None
+
+
+class NewAdvertisement(BaseModel):
+    name: str
+    type: AdvertisementType
+    content: str
 
 
 class TestResponse(BaseModel):
@@ -47,17 +55,26 @@ class TestResponse(BaseModel):
 
 
 class ComplaintType(Enum):
-    adult_content = "взрослый контент"
-    politic = "политика"
-    insults = "оскорбления"
+    adult_content = "adult_content"
+    politic = "politic"
+    insults = "insults"
 
 
 class Complaint(BaseModel):
     content: str
     type: ComplaintType
-    user: User = None
-    publication_time: str = None
-    id: int = None
+    user: User | dict = None
+    publication_time: datetime | None = None
+    id: int | None = None
+
+
+class NewComplaint(BaseModel):
+    content: str
+    type: ComplaintType
+
+
+class NewComment(BaseModel):
+    content: str
 
 
 @dataclass
