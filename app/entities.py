@@ -17,9 +17,9 @@ class Credentials(BaseModel):
 
 
 class AdvertisementType(Enum):
-    buy_order = "Покупка"
-    sell_order = "Продажа"
-    service = "Услуга"
+    buy_order = "покупка"
+    sell_order = "продажа"
+    service = "услуга"
 
 
 class Comment(BaseModel):
@@ -43,9 +43,9 @@ class TestResponse(BaseModel):
 
 
 class ComplaintType(Enum):
-    adult_content = "Взрослый контент"
-    politic = "Политика"
-    insults = "Оскорбления"
+    adult_content = "взрослый контент"
+    politic = "политика"
+    insults = "оскорбления"
 
 
 class Complaint(BaseModel):

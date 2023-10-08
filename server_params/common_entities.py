@@ -25,3 +25,8 @@ class Config:
     bot_token: str
     group_id: str
 
+    db_username: str
+    db_password: str
+    db_host: str
+    db_name: str
+
