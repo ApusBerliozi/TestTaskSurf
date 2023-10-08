@@ -6,8 +6,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import sessionmaker, Session
 
 from app.entities import NewUser, AdvertisementSort, AdvertisementFilter, Advertisement, User, Comment, CommentFilter, \
-    Complaint, ComplaintFilter
+    Complaint, ComplaintFilter, Credentials
 from app.models import UserModel, AdvertisementModel, CommentModel, ComplaintModel
+from libs.password_workflow import hash_password
 from server_params.common_entities import Paginator
 from server_params.db import db_engine
 
@@ -31,16 +32,28 @@ def create_user(user: NewUser) -> UUID:
     with db_connection(UserSession) as db:
         user = UserModel(name=user.name,
                          login=user.login,
-                         password=user.password,
+                         password=hash_password(user.password),
                          surname=user.surname)
         db.add(user)
         db.commit()
     return user.uuid
 
 
-def get_advertisements(paginator: Paginator,
-                       filt: AdvertisementFilter,
-                       sort_param: AdvertisementSort,) -> typing.List[Advertisement]:
+def get_user(credentials: Credentials) -> UUID:
+    with db_connection(UserSession) as db:
+        user = db.query(UserModel).\
+            filter(UserModel.login == credentials.login,
+                   UserModel.password == hash_password(credentials.password)).\
+            first()
+        if user:
+            return user.uuid
+        else:
+            raise HTTPException(status_code=404, detail="Item not found")
+
+
+def collect_advertisements(paginator: Paginator,
+                           filt: AdvertisementFilter,
+                           sort_param: AdvertisementSort,) -> typing.List[Advertisement]:
     offset = (paginator.page - 1) * paginator.limit
     with db_connection(AdvertisementSession) as db:
         if filt.type and sort_param.publication_time:

@@ -1,4 +1,5 @@
 import datetime
+from uuid import UUID
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -7,11 +8,9 @@ from jwt.jwt import JWT
 from app.entities import Credentials
 
 
-def create_user_token(credentials: Credentials) -> str:
+def create_user_token(user_uuid: UUID) -> str:
     payload = {
-        "loing": credentials.login,
-        "password": credentials.password,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        "user_uuid": user_uuid,
     }
 
     jwt_token = JWT().encode(payload=payload, key=config.jwt_user_secret_key, alg='HS256')
@@ -30,10 +29,9 @@ def verify_user_token(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-def create_admin_token(credentials: Credentials) -> str:
+def create_admin_token(user_uuid: UUID) -> str:
     payload = {
-        "username": credentials.login,
-        "password": credentials.password
+        "user_uuid": user_uuid
     }
 
     jwt_token = JWT().encode(payload=payload, key=config.jwt_admin_secret_key, alg='HS256')

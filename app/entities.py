@@ -34,12 +34,12 @@ class Comment(BaseModel):
 
 
 class Advertisement(BaseModel):
-    id: str
-    user: User
     name: str
     type: AdvertisementType
     content: str
-    publication_time: str
+    user: User = None
+    publication_time: str = None
+    id: str = None
 
 
 class TestResponse(BaseModel):
