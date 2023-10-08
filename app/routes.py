@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from app.entities import Credentials, Advertisement, Comment, Complaint, AdvertisementFilter, CommentFilter, \
-    AdvertisementSort, ComplaintFilter
+    AdvertisementSort, ComplaintFilter, NewUser
 from app.query_parsers import parse_advertisements_filtr, parse_advertisement_sort_params, parse_comment_filtr, \
     parse_complaint_filtr
 from libs.jwt_token import verify_user_token, verify_admin_token
@@ -12,8 +12,8 @@ app = FastAPI()
 
 
 @app.post("/user/sign_up/")
-async def sign_up(credentials: Credentials,) -> hint_factory({"jwt_token": str},
-                                                             description="Зарегистрировался новый пользователь"):
+async def sign_up(user_info: NewUser,) -> hint_factory({"jwt_token": str},
+                                                       description="Зарегистрировался новый пользователь"):
     user_token = ...
     return ServerResponse(content={"jwt_token": user_token},
                           description="Зарегистрировался новый пользователь")
@@ -72,8 +72,7 @@ async def get_adv_comments(advertisement_id: int,
 
 
 @app.delete("/advertisements/{advertisement_id:int}/comments/{comment_id:int}/")
-async def delete_comment(advertisement_id: int,
-                         comment_id: int,
+async def delete_comment(comment_id: int,
                          token: str = Depends(verify_admin_token),) -> hint_factory(Comment,
                                                                                     description="Удалён комментарий"):
     ...
@@ -82,6 +81,7 @@ async def delete_comment(advertisement_id: int,
 
 @app.post("/advertisements/{advertisement_id:int}/comments/")
 async def create_comment(advertisement_id: int,
+                         comment=Comment,
                          token: str = Depends(verify_user_token),) -> hint_factory(Comment,
                                                                                    description="Создан комментарий для объявления"):
     comment = ...
@@ -90,7 +90,8 @@ async def create_comment(advertisement_id: int,
 
 
 @app.post("/admins/")
-async def create_admin(token: str = Depends(verify_admin_token),) -> hint_factory({"admin_token": str},
+async def create_admin(user_login: str,
+                       token: str = Depends(verify_admin_token),) -> hint_factory({"admin_token": str},
                                                                                   description="Создан новый администратор"):
     admin_token = ...
     return ServerResponse(content=admin_token,
@@ -99,6 +100,7 @@ async def create_admin(token: str = Depends(verify_admin_token),) -> hint_factor
 
 @app.post("/advertisements/{advertisement_id:int}/complaints/")
 async def create_complaint(advertisement_id: int,
+                           complaint: Complaint,
                            token: str = Depends(verify_user_token),) -> hint_factory(Complaint,
                                                                                      description="Создана жалоба на объявление"):
     complaint = ...

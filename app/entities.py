@@ -12,8 +12,13 @@ class User(BaseModel):
 
 
 class Credentials(BaseModel):
-    nickname: str
+    login: str
     password: str
+
+
+class NewUser(Credentials):
+    name: str
+    surname: str
 
 
 class AdvertisementType(Enum):
@@ -23,9 +28,9 @@ class AdvertisementType(Enum):
 
 
 class Comment(BaseModel):
-    id: int
-    user: User
     content: str
+    id: int = None
+    user: User = None
 
 
 class Advertisement(BaseModel):
@@ -33,7 +38,6 @@ class Advertisement(BaseModel):
     user: User
     name: str
     type: AdvertisementType
-    comments: typing.List[Comment]
     content: str
     publication_time: str
 
@@ -49,11 +53,11 @@ class ComplaintType(Enum):
 
 
 class Complaint(BaseModel):
-    id: int
-    user: User
     content: str
     type: ComplaintType
-    publication_time: str
+    user: User = None
+    publication_time: str = None
+    id: int = None
 
 
 @dataclass
@@ -69,7 +73,6 @@ class CommentFilter:
 
 @dataclass
 class ComplaintFilter:
-    user_id: typing.Optional[int] = None
     type: typing.Optional[ComplaintType] = None
 
 

@@ -9,7 +9,7 @@ from app.entities import Credentials
 
 def create_user_token(credentials: Credentials) -> str:
     payload = {
-        "username": credentials.nickname,
+        "loing": credentials.login,
         "password": credentials.password,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
     }
@@ -32,7 +32,7 @@ def verify_user_token(token: str = Depends(oauth2_scheme)):
 
 def create_admin_token(credentials: Credentials) -> str:
     payload = {
-        "username": credentials.nickname,
+        "username": credentials.login,
         "password": credentials.password
     }
 
