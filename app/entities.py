@@ -28,26 +28,26 @@ class AdvertisementType(Enum):
     service = "service"
 
 
-class Comment(BaseModel):
+class NewComment(BaseModel):
     content: str
-    published_at: datetime | None = None
-    id: int | None = None
-    user: User | None = None
 
 
-class Advertisement(BaseModel):
-    name: str
-    type: AdvertisementType
-    content: str
-    user: User = None
-    publication_time: datetime | None = None
-    id: int | None = None
+class Comment(NewComment):
+    published_at: datetime
+    id: int
+    user: User
 
 
 class NewAdvertisement(BaseModel):
     name: str
     type: AdvertisementType
     content: str
+
+
+class Advertisement(NewAdvertisement):
+    user: User
+    publication_time: datetime
+    id: int
 
 
 class TestResponse(BaseModel):
@@ -60,21 +60,15 @@ class ComplaintType(Enum):
     insults = "insults"
 
 
-class Complaint(BaseModel):
-    content: str
-    type: ComplaintType
-    user: User | dict = None
-    publication_time: datetime | None = None
-    id: int | None = None
-
-
 class NewComplaint(BaseModel):
     content: str
     type: ComplaintType
 
 
-class NewComment(BaseModel):
-    content: str
+class Complaint(NewComplaint):
+    user: User
+    publication_time: datetime
+    id: int
 
 
 @dataclass

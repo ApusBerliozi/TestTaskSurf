@@ -123,20 +123,22 @@ def receive_advertisement(advertisement_id: int,) -> dict:
                                   surname=advertisement[1].surname
                                             ),
                                  name=advertisement[0].caption,
-                                 type=advertisement[0].type,
+                                 type=advertisement[0].type.value,
                                  content=advertisement[0].content,
                                  publication_time=advertisement[0].created_at).__dict__
         else:
             raise HTTPException(status_code=404, detail="Item not found")
 
 
-def delete_advertisement(advertisement_id: int,) -> None:
+def delete_advertisement(advertisement_id: int,
+                         user_uuid: UUID) -> None:
     with db_connection() as db:
-        advertisement = db.query(AdvertisementModel).\
-            filter(AdvertisementModel.id == advertisement_id).\
+        advertisement = db.query(AdvertisementModel, UserModel).\
+            filter(AdvertisementModel.id == advertisement_id,
+                   UserModel.uuid == user_uuid).\
             first()
         if advertisement:
-            db.delete(advertisement)
+            db.delete(advertisement[0])
             db.commit()
         else:
             raise HTTPException(status_code=404, detail="Item not found")
@@ -229,7 +231,7 @@ def generate_complaint(advertisement_id: int,
                             ),
                          content=complaint.content,
                          type=complaint.type.value,
-                         publication_tyme=complaint.created_at).__dict__
+                         publication_time=complaint.created_at).__dict__
 
 
 def collect_complaints(advertisement_id: int,
@@ -241,7 +243,7 @@ def collect_complaints(advertisement_id: int,
             complaints = db. \
                 query(ComplaintModel, UserModel). \
                 join(UserModel). \
-                filter(ComplaintModel.type == ComplaintFilter.type.value,
+                filter(ComplaintModel.type == filtr.type.value,
                        ComplaintModel.advertisement_id == advertisement_id). \
                 limit(paginator.limit). \
                 offset(offset). \
