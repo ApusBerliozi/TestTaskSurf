@@ -1,0 +1,1364 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/user/sign_up/": {
+      "post": {
+        "summary": "Sign Up",
+        "operationId": "sign_up_user_sign_up__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/sign_in/": {
+      "get": {
+        "summary": "Sign In",
+        "operationId": "sign_in_user_sign_in__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__2"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/advertisements/": {
+      "get": {
+        "summary": "Get Advertisements",
+        "operationId": "get_advertisements_advertisements__get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Records amount",
+              "description": "The number of records on the page",
+              "default": 12
+            },
+            "description": "The number of records on the page"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page number",
+              "description": "Which page we are at",
+              "default": 1
+            },
+            "description": "Which page we are at"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/AdvertisementType"
+                }
+              ],
+              "title": "Advertisement's type",
+              "description": "Which advertisements whe should receive"
+            },
+            "description": "Which advertisements whe should receive"
+          },
+          {
+            "name": "publication_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Publication time",
+              "description": "When advertisement was published"
+            },
+            "description": "When advertisement was published"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Advertisement",
+        "operationId": "create_advertisement_advertisements__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewAdvertisement"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__4"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/advertisements/{advertisement_id}/": {
+      "get": {
+        "summary": "Get Advertisement",
+        "operationId": "get_advertisement_advertisements__advertisement_id___get",
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__5"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove Advertisement",
+        "operationId": "remove_advertisement_advertisements__advertisement_id___delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__6"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/advertisements/{advertisement_id}/comments/": {
+      "get": {
+        "summary": "Get Adv Comments",
+        "operationId": "get_adv_comments_advertisements__advertisement_id__comments__get",
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Records amount",
+              "description": "The number of records on the page",
+              "default": 12
+            },
+            "description": "The number of records on the page"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page number",
+              "description": "Which page we are at",
+              "default": 1
+            },
+            "description": "Which page we are at"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__7"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Comment",
+        "operationId": "create_comment_advertisements__advertisement_id__comments__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__9"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/advertisements/{advertisement_id}/comments/{comment_id}/": {
+      "delete": {
+        "summary": "Delete Comment",
+        "operationId": "delete_comment_advertisements__advertisement_id__comments__comment_id___delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Comment Id"
+            }
+          },
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__8"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admins/": {
+      "post": {
+        "summary": "Create Admin",
+        "operationId": "create_admin_admins__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_login",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__10"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/advertisements/{advertisement_id}/complaints/": {
+      "post": {
+        "summary": "Create Complaint",
+        "operationId": "create_complaint_advertisements__advertisement_id__complaints__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewComplaint"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__11"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Receive Complaints",
+        "operationId": "receive_complaints_advertisements__advertisement_id__complaints__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "advertisement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Advertisement Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Records amount",
+              "description": "The number of records on the page",
+              "default": 12
+            },
+            "description": "The number of records on the page"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page number",
+              "description": "Which page we are at",
+              "default": 1
+            },
+            "description": "Which page we are at"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ComplaintType"
+                }
+              ],
+              "title": "Complaint's type",
+              "description": "Which advertisements whe should receive"
+            },
+            "description": "Which advertisements whe should receive"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/abc__AnnotationClass__12"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Advertisement": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "$ref": "#/components/schemas/AdvertisementType"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "user": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "publication_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Time"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "content"
+        ],
+        "title": "Advertisement"
+      },
+      "AdvertisementType": {
+        "type": "string",
+        "enum": [
+          "buy_order",
+          "sell_order",
+          "service"
+        ],
+        "title": "AdvertisementType"
+      },
+      "Comment": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "Comment"
+      },
+      "Complaint": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ComplaintType"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "title": "User"
+          },
+          "publication_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Time"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "type"
+        ],
+        "title": "Complaint"
+      },
+      "ComplaintType": {
+        "type": "string",
+        "enum": [
+          "adult_content",
+          "politic",
+          "insults"
+        ],
+        "title": "ComplaintType"
+      },
+      "Credentials": {
+        "properties": {
+          "login": {
+            "type": "string",
+            "title": "Login"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "login",
+          "password"
+        ],
+        "title": "Credentials"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "NewAdvertisement": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "$ref": "#/components/schemas/AdvertisementType"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "content"
+        ],
+        "title": "NewAdvertisement"
+      },
+      "NewComment": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "NewComment"
+      },
+      "NewComplaint": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ComplaintType"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "type"
+        ],
+        "title": "NewComplaint"
+      },
+      "NewUser": {
+        "properties": {
+          "login": {
+            "type": "string",
+            "title": "Login"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "surname": {
+            "type": "string",
+            "title": "Surname"
+          }
+        },
+        "type": "object",
+        "required": [
+          "login",
+          "password",
+          "name",
+          "surname"
+        ],
+        "title": "NewUser"
+      },
+      "User": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "title": "Uuid"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "surname": {
+            "type": "string",
+            "title": "Surname"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uuid",
+          "name",
+          "surname"
+        ],
+        "title": "User"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "abc__AnnotationClass__1": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Зарегистрировался новый пользователь"
+          },
+          "content": {
+            "$ref": "#/components/schemas/pydantic__main__AnnotationModel__1"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__10": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Создан новый администратор"
+          },
+          "content": {
+            "$ref": "#/components/schemas/pydantic__main__AnnotationModel__5"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__11": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Создана жалоба на объявление"
+          },
+          "content": {
+            "$ref": "#/components/schemas/Complaint"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__12": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Получены жалобы на объявление"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/Complaint"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__2": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Пользователь вошёл в систему"
+          },
+          "content": {
+            "$ref": "#/components/schemas/pydantic__main__AnnotationModel__2"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__3": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Получен список объявлений"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/Advertisement"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__4": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Создано новое объявление"
+          },
+          "content": {
+            "$ref": "#/components/schemas/Advertisement"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__5": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Полученно объявление"
+          },
+          "content": {
+            "$ref": "#/components/schemas/Advertisement"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__6": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Удаленно объявление"
+          },
+          "content": {
+            "$ref": "#/components/schemas/pydantic__main__AnnotationModel__3"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__7": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Полученны комментарии для объявления"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__8": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Удалён комментарий"
+          },
+          "content": {
+            "$ref": "#/components/schemas/pydantic__main__AnnotationModel__4"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "abc__AnnotationClass__9": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": "Создан комментарий для объявления"
+          },
+          "content": {
+            "$ref": "#/components/schemas/Comment"
+          },
+          "datetime": {
+            "type": "string",
+            "title": "Datetime",
+            "default": "2023-10-09"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AnnotationClass"
+      },
+      "pydantic__main__AnnotationModel__1": {
+        "properties": {
+          "jwt_token": {
+            "type": "string",
+            "title": "Jwt Token"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationModel"
+      },
+      "pydantic__main__AnnotationModel__2": {
+        "properties": {
+          "jwt_token": {
+            "type": "string",
+            "title": "Jwt Token"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationModel"
+      },
+      "pydantic__main__AnnotationModel__3": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationModel"
+      },
+      "pydantic__main__AnnotationModel__4": {
+        "properties": {},
+        "type": "object",
+        "title": "AnnotationModel"
+      },
+      "pydantic__main__AnnotationModel__5": {
+        "properties": {
+          "admin_token": {
+            "type": "string",
+            "title": "Admin Token"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationModel"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "token"
+          }
+        }
+      }
+    }
+  }
+}

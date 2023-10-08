@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
-from app.entities import Credentials, Advertisement, Comment, Complaint, AdvertisementFilter, CommentFilter, \
+from app.entities import Credentials, Advertisement, Comment, Complaint, AdvertisementFilter, \
     AdvertisementSort, ComplaintFilter, NewUser, NewAdvertisement, NewComplaint, NewComment
-from app.query_parsers import parse_advertisements_filtr, parse_advertisement_sort_params, parse_comment_filtr, \
+from app.query_parsers import parse_advertisements_filtr, parse_advertisement_sort_params, \
     parse_complaint_filtr
 from app.repo import create_user, get_user, collect_advertisements, generate_advertisement, receive_advertisement, \
     delete_advertisement, collect_adv_comments, remove_comment, generate_comment, make_admin, generate_complaint, \
@@ -74,12 +74,10 @@ async def remove_advertisement(advertisement_id: int,
 
 @app.get("/advertisements/{advertisement_id:int}/comments/")
 async def get_adv_comments(advertisement_id: int,
-                           paginator: Paginator = Depends(get_paginator),
-                           filtr: CommentFilter = Depends(parse_comment_filtr),) -> hint_factory((Comment,),
+                           paginator: Paginator = Depends(get_paginator),) -> hint_factory((Comment,),
                                                                                     description="Полученны комментарии для объявления"):
     comments = collect_adv_comments(advertisement_id=advertisement_id,
-                                    paginator=paginator,
-                                    filtr=filtr)
+                                    paginator=paginator)
     return ServerResponse(content=comments,
                           description=f"Полученны комментарии для объявления с id {advertisement_id}")
 

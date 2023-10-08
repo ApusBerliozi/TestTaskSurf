@@ -143,25 +143,16 @@ def delete_advertisement(advertisement_id: int,) -> None:
 
 
 def collect_adv_comments(advertisement_id: int,
-                         filtr: CommentFilter,
                          paginator: Paginator) -> typing.List[dict]:
     offset = (paginator.page - 1) * paginator.limit
     with db_connection() as db:
-        if filtr.user_id:
-            comments = db. \
-                       query(CommentModel, UserModel).\
-                       join(UserModel).\
-                       filter(CommentModel.advertisement_id == advertisement_id).\
-                       limit(paginator.limit).\
-                       offset(offset).\
-                       all()
-        else:
-            comments = db. \
-                query(CommentModel, UserModel). \
-                join(UserModel).\
-                limit(paginator.limit). \
-                offset(offset). \
-                all()
+        comments = db. \
+            query(CommentModel, UserModel). \
+            join(UserModel).\
+            filter(CommentModel.advertisement_id == advertisement_id).\
+            limit(paginator.limit). \
+            offset(offset). \
+            all()
         return [Comment(id=row[0].id,
                         user=User(
                               uuid=str(row[1].uuid),

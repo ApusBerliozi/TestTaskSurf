@@ -80,12 +80,11 @@ class NewComment(BaseModel):
 @dataclass
 class AdvertisementFilter:
     type: AdvertisementType | None = None
-    user_id: int | None = None
 
 
 @dataclass
 class CommentFilter:
-    user_id: typing.Optional[int] = None
+    user_uuid: typing.Optional[str] = None
 
 
 @dataclass
@@ -95,5 +94,5 @@ class ComplaintFilter:
 
 @dataclass
 class AdvertisementSort:
-    publication_time: typing.Optional[str] = None
+    publication_time: typing.Optional[bool] = False
 
